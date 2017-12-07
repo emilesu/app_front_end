@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>首页列表</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+
+    <style>
+
+    section {
+      position: relative;
+      width: 100%;
+      height: auto;
+      box-sizing: border-box;
+
+    }
+
+    .ware {
+      position: relative;
+      width: auto;
+      height: auto;
+      box-sizing: border-box;
+    }
+
+    .content {
+      width: 100%;
+      height: 100%;
+      margin: 0 0 40px;
+      padding-bottom: 10px;
+      /*background-color: #f1f1f1;*/
+    }
+
+    .content .list-thunbnail {
+      width: 100%;
+      height: auto;
+    }
+
+    .content .info {
+      color: #333;
+      font-weight: lighter;
+      padding: 10px 15px;
+    }
+
+    .content .info .list-title {
+      font-size: 24px;
+      font-weight: normal;
+    }
+
+    .content .info .list-intro {
+      color: #666;
+      padding: 6px 0 10px;
+      line-height: 26px;
+      text-align: justify;
+    }
+
+    .content .info .list-update {
+      color: #999;
+      font-size: 12px;
+      float: left;
+    }
+
+    .content .info .list-post {
+      color: #999;
+      font-size: 12px;
+      float: right;
+    }
+
+    </style>
+<head>
+
+<body>
+  <section id="list">
+    <div class="ware">
+      <div class="content" onclick="fnOpenWareWin();">
+        <img class="list-thunbnail" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1512666902715&di=70f5bffe2c1e40fadebdb5c42147bb43&imgtype=0&src=http%3A%2F%2Fscimg.jb51.net%2Fallimg%2F170523%2F106-1F523104R0F9.jpg">
+        <div class="info">
+          <h2 class="list-title">马上就要圣诞节了</h2>
+          <p class="list-intro">这个神奇的女人叫Frischmann, 和Suede乐队主唱brett有三年恋情. 在把两个男人迷得神魂颠倒之后, 飘然离去</p>
+          <span class="list-update">1天前</span>
+          <span class="list-post">13 回复</span>
+        </div>
+      </div>
+      <div class="content" onclick="fnOpenWareWin();">
+        <img class="list-thunbnail" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1512670756597&di=b8f254cb3ce69cdac5a7d9bb0d0c75f3&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F14%2F16%2F45%2F09N58PICfpC_1024.jpg">
+        <div class="info">
+          <h2 class="list-title">东方的树林王国 - 枫林岛</h2>
+          <p class="list-intro">这个神奇的女人叫Frischmann, 和Suede乐队主唱brett有三年恋情. 在把两个男人迷得神</p>
+          <span class="list-update">3天前</span>
+          <span class="list-post">32 回复</span>
+        </div>
+      </div>
+      <div class="content" onclick="fnOpenWareWin();">
+        <img class="list-thunbnail" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1512673049257&di=7f6e17fba649003af72ef75653738de5&imgtype=0&src=http%3A%2F%2Fimg2.3lian.com%2F2014%2Ff2%2F44%2Fd%2F103.jpg" width="1920" height="1080">
+        <div class="info">
+          <h2 class="list-title">当独处成为习惯的时候, 就是自由</h2>
+          <p class="list-intro">这个神奇的女人叫Frischmann, 和Suede乐队主唱brett有三年恋情, 飘然离去</p>
+          <span class="list-update">3天前</span>
+          <span class="list-post">32 回复</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+  apiready = function() {
+
+  }
+
+  function fnOpenWareWin () {
+      api.openWin({
+          name: 'ware',
+          url: './ware.html',
+          pageParam: {
+              wareId: 'W1234567890'
+          }
+      });
+  }
+</script>
+
+</html>
