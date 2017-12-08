@@ -45,8 +45,9 @@
     }
 
     .content .info .list-title {
-      font-size: 24px;
+      font-size: 22px;
       font-weight: normal;
+      text-align: justify;
     }
 
     .content .info .list-intro {
@@ -73,34 +74,16 @@
 
 <body>
   <section id="list">
-    <div class="ware">
-      <div class="content" onclick="fnOpenWareWin();">
+    <div class="ware" id="ware-list">
+      <!-- <div class="content" tapmode onclick="fnOpenWareWin();">
         <img class="list-thunbnail" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1512666902715&di=70f5bffe2c1e40fadebdb5c42147bb43&imgtype=0&src=http%3A%2F%2Fscimg.jb51.net%2Fallimg%2F170523%2F106-1F523104R0F9.jpg">
         <div class="info">
-          <h2 class="list-title">马上就要圣诞节了</h2>
+          <h2 class="list-title">111</h2>
           <p class="list-intro">这个神奇的女人叫Frischmann, 和Suede乐队主唱brett有三年恋情. 在把两个男人迷得神魂颠倒之后, 飘然离去</p>
           <span class="list-update">1天前</span>
           <span class="list-post">13 回复</span>
         </div>
-      </div>
-      <div class="content" onclick="fnOpenWareWin();">
-        <img class="list-thunbnail" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1512670756597&di=b8f254cb3ce69cdac5a7d9bb0d0c75f3&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F14%2F16%2F45%2F09N58PICfpC_1024.jpg">
-        <div class="info">
-          <h2 class="list-title">东方的树林王国 - 枫林岛</h2>
-          <p class="list-intro">这个神奇的女人叫Frischmann, 和Suede乐队主唱brett有三年恋情. 在把两个男人迷得神</p>
-          <span class="list-update">3天前</span>
-          <span class="list-post">32 回复</span>
-        </div>
-      </div>
-      <div class="content" onclick="fnOpenWareWin();">
-        <img class="list-thunbnail" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1512673049257&di=7f6e17fba649003af72ef75653738de5&imgtype=0&src=http%3A%2F%2Fimg2.3lian.com%2F2014%2Ff2%2F44%2Fd%2F103.jpg" width="1920" height="1080">
-        <div class="info">
-          <h2 class="list-title">当独处成为习惯的时候, 就是自由</h2>
-          <p class="list-intro">这个神奇的女人叫Frischmann, 和Suede乐队主唱brett有三年恋情, 飘然离去</p>
-          <span class="list-update">3天前</span>
-          <span class="list-post">32 回复</span>
-        </div>
-      </div>
+      </div> -->
     </div>
   </section>
 </body>
@@ -108,8 +91,40 @@
 <script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript">
   apiready = function() {
-
+    showWareItem();
   }
+
+
+  // 配置msg借口
+  function showWareItem() {
+    api.ajax({
+      url: 'http://v.juhe.cn/toutiao/index?key=491e91139fc003eb798bb7b436f0acdf&type=top',
+      method: 'get',
+      dataTpye: 'json',
+    }, function(ret, err) {
+        if (ret) {
+          var newContent = '';
+          for (var i = 0; i < 30; i++){
+
+            newContent += '<div class="content" tapmode onclick="fnOpenWareWin();">';
+              newContent += '<img class="list-thunbnail" src="'+ ret.result.data[i].thumbnail_pic_s +'">';
+              newContent += '<div class="info">';
+                newContent += '<h2 class="list-title">'+ ret.result.data[i].title +'</h2>';
+                newContent += '<p class="list-intro">'+ ret.result.data[i].title +'</p>';
+                newContent += '<span class="list-update">'+ ret.result.data[i].date +'</span>';
+                newContent += '<span class="list-post">'+ ret.result.data[i].author_name +'</span>';
+              newContent += '</div>';
+            newContent += '</div>';
+
+            // listTitle.textContent = ret.result.data[2].title
+          }
+          document.getElementById('ware-list').innerHTML = newContent;
+        } else {
+          alert(JSON.stringify(err));
+        }
+    });
+  }
+
 
   function fnOpenWareWin () {
       api.openWin({
@@ -120,6 +135,7 @@
           }
       });
   }
+
 </script>
 
 </html>
