@@ -1,0 +1,130 @@
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>商品</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <style>
+
+    body {
+        height: 100%;
+        min-height: 100%;
+    }
+
+    section {
+      position: relative;
+      width: 100%;
+      height: auto;
+      box-sizing: border-box;
+    }
+
+    #article-content {
+      position: relative;
+      width: auto;
+      height: auto;
+      box-sizing: border-box;
+    }
+
+    .article-info {
+      color: #333;
+      font-weight: lighter;
+    }
+
+    .article-title {
+      margin: 20px 15px 10px;
+    }
+
+    .article-title h1 {
+      font-size: 22px;
+      font-weight: normal;
+      text-align: justify;
+    }
+
+    .article-update {
+      margin: 0px 15px 25px;
+      color: #999;
+      font-size: 12px;
+    }
+
+    .article-description {
+      width: 100%;
+      height: auto;
+    }
+
+    .article-description img {
+      width: 100%;
+      height: auto;
+    }
+
+    .article-description p {
+      text-align: justify;
+      line-height: 28px;
+      padding: 10px 15px;
+    }
+
+
+
+    </style>
+</header>
+
+<body>
+<section>
+  <div id="article-content">
+    <!-- <div class="article-info" >
+      <div class="article-title">
+        <h1>男生不要再烦恼如何才能帮女友拍出美照了，秘籍在此！</h1>
+      </div>
+      <div class="article-update">
+        <span>3天前</span>
+      </div>
+      <div id="article-description">
+      </div>
+    </div> -->
+  </div>
+</section>
+</body>
+
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/time.js"></script>
+<script type="text/javascript">
+  apiready = function() {
+    articleShowPage(api.pageParam.articleId);
+  }
+
+  // 配置 article show page 接口
+  function articleShowPage(id) {
+    api.ajax({
+      url: 'http://192.168.31.208:3000/api/v1/articles/' + id,
+      method: 'get',
+      dataTpye: 'json',
+    }, function(ret, err) {
+      if (ret) {
+
+        // article UI
+        var newContent = '';
+        var time = Time.human(ret.date);
+        newContent += '<div class="article-info">';
+          newContent += '<div class="article-title">';
+            newContent += '<h1>'+ ret.title +'</h1>';
+          newContent += '</div>';
+          newContent += '<div class="article-update">';
+            newContent += '<span>'+ time +'</span>';
+          newContent += '</div>';
+          newContent += '<div class="article-description">';
+            newContent += ''+ ret.description +''
+          newContent += '</div>';
+        newContent += '</div>';
+
+        document.getElementById('article-content').innerHTML = newContent;
+
+      } else {
+        alert(JSON.stringify(err));
+      }
+    });
+
+  }
+
+
+</script>
+
+</htmle>

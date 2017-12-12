@@ -53,7 +53,7 @@
     .content .info .list-intro {
       color: #666;
       padding: 6px 0 10px;
-      line-height: 26px;
+      line-height: 28px;
       text-align: justify;
     }
 
@@ -97,8 +97,7 @@
     ArticleItem();
   }
 
-
-  // 配置msg借口
+  // 配置article列表接口
   function ArticleItem() {
     api.ajax({
       url: 'http://192.168.31.208:3000/api/v1/articles',
@@ -107,17 +106,17 @@
     }, function(ret, err) {
         if (ret) {
           var newContent = '';
-          for (var i = 0; i < 4; i++){
+          for (var i = 0; i < 5; i++){
 
             // 列表 UI 遍历
-            var time = ret.data[i].date
+            var time = Time.human(ret.data[i].date);
 
             newContent += '<div class="content" tapmode onclick="fnOpenArticleWin('+ ret.data[i].articleId +');">';
               newContent += '<img class="list-thunbnail" src="'+ ret.data[i].article_cover.url +'">';
               newContent += '<div class="info">';
                 newContent += '<h2 class="list-title">'+ ret.data[i].title +'</h2>';
                 newContent += '<p class="list-intro">'+ ret.data[i].intro +'</p>';
-                newContent += '<span class="list-update">'+ Time.ago(time) +'</span>';
+                newContent += '<span class="list-update">'+ time +'</span>';
                 newContent += '<span class="list-post">'+ ret.data[i].articleId +'</span>';
               newContent += '</div>';
             newContent += '</div>';
@@ -134,7 +133,7 @@
   function fnOpenArticleWin(articleId_) {
       api.openWin({
           name: 'article',
-          url: './article',
+          url: './article.html',
           pageParam: {
               articleId: articleId_
           }
