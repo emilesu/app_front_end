@@ -41,6 +41,7 @@ apiready = function () {
       marginTop:20,
       marginBottom: 65
     },
+    bounces: true,
   })
 
   var NVTabBar = api.require('NVTabBar');
@@ -176,6 +177,7 @@ apiready = function () {
               marginTop:20,
               marginBottom: 65
             },
+            bounces: true,
           })
         }
 
@@ -197,9 +199,9 @@ apiready = function () {
 
         else if (ret.index == 3 && ret.eventType == 'click'){
           api.openFrame({
-            name: 'frame3',
-            url: 'html/frame3.html',
-            bounces: false,
+            name: 'personalcenter',
+            url: 'html/personalcenter.html',
+            bounces: true,
             rect: {
               x: 0,
               y: 0,
@@ -209,6 +211,10 @@ apiready = function () {
               marginBottom: 65
             },
           })
+          api.openFrame({
+            name: 'personalcenter_frame',
+            url: './personalcenter_frame.html',
+          });
         }
 
       });
