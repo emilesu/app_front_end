@@ -31,7 +31,7 @@
 apiready = function () {
   api.openFrame({
     name: 'frame0',
-    url: 'html/frame0.html',
+    url: './html/frame0.html',
     bounces: false,
     rect: {
       x: 0,
@@ -158,16 +158,16 @@ apiready = function () {
           // api.closeFrame();
           api.openFrame({
             name: 'frame0'
-          })
+          });
           api.openFrameGroup({
             name: 'mainFrameGroup'
-          })
+          });
         }
 
         else if (ret.index == 1 && ret.eventType == 'click'){
           api.openFrame({
             name: 'frame1',
-            url: 'html/frame1.html',
+            url: './html/frame1.html',
             bounces: false,
             rect: {
               x: 0,
@@ -184,7 +184,7 @@ apiready = function () {
         else if (ret.index == 2 && ret.eventType == 'click'){
           api.openFrame({
             name: 'frame2',
-            url: 'html/frame2.html',
+            url: './html/frame2.html',
             bounces: false,
             rect: {
               x: 0,
@@ -200,7 +200,7 @@ apiready = function () {
         else if (ret.index == 3 && ret.eventType == 'click'){
           api.openFrame({
             name: 'personalcenter',
-            url: 'html/personalcenter.html',
+            url: './html/personalcenter.html',
             bounces: true,
             rect: {
               x: 0,
@@ -213,7 +213,7 @@ apiready = function () {
           })
           api.openFrame({
             name: 'personalcenter_frame',
-            url: './personalcenter_frame.html',
+            url: './html/personalcenter_frame.html',
           });
         }
 

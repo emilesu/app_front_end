@@ -25,7 +25,7 @@
 
     header .icon-panel {
         width: 100%;
-        height: 110px;
+        height: 105px;
         text-align: center;
     }
 
@@ -36,14 +36,13 @@
         height: 86px;
         border-radius: 86px;
         background-repeat: no-repeat;
-        background-image: url(../image/logo108.png);
+        /*background-image: url(../image/logo108.png);*/
         background-size: 100% 100%;
         background-position: center center;
     }
 
     header .username {
-        height: 30px;
-        line-height: 0px;
+        height: 60px;
         font-size: 14px;
         color: #666;
         text-align: center;
@@ -114,10 +113,10 @@
 <body>
 
   <header>
-    <div class="icon-panel" tapmode onclick="fnSetAvatar()">
+    <div class="icon-panel">
       <div id="icon" class="icon"></div>
     </div>
-    <div id="username" class="username">Emilesu</div>
+    <div id="username" class="username"></div>
   </header>
 
   <div class="my-msg-single">
@@ -144,17 +143,118 @@
     </div>
   </div>
 
-  <div class="my-msg-single">
+  <div class="my-msg-single" tapmode onclick="fnLogout();">
     <span class="msg-title">退出</span>
     <span class="msg-arrow"></span>
   </div>
 </body>
 
 <script type="text/javascript" src="../script/api.js"></script>
-<script type="text/javascript" src="../script/time.js"></script>
 <script type="text/javascript">
   apiready = function() {
+    logStatus();
+  }
 
+  // 是否登录判断
+  function logStatus() {
+    var userInfo = $api.getStorage('userInfo');
+    if (userInfo == null) {
+      userUnLogin();
+    } else {
+      fnGetUserInfo ();
+    }
+  }
+
+  // 未登录, 提示跳到登录页
+  function userUnLogin() {
+    // 默认头像
+    var avatarImg = document.getElementById('icon');
+    avatarImg.style.backgroundImage = 'url(../image/logo108.png)';
+
+    // 跳转按钮
+    var logButton = document.getElementById('username');
+    var btnHtml = '';
+    btnHtml += '<div tapmode onclick="goToLoginWin();">';
+      btnHtml += '登录 / 注册';
+    btnHtml += '</div>';
+    logButton.innerHTML = btnHtml;
+  }
+
+  // 已登录, 显示用户信息
+  function fnGetUserInfo () {
+    var userInfo = $api.getStorage('userInfo');
+    api.ajax({
+        url: 'http://192.168.31.208:3000/api/v1/me?auth_token=' + userInfo.auth_token,
+        method: 'get',
+        dataTpye: 'json',
+    }, function(ret, err) {
+        if (ret) {
+
+          var email = ret.email;
+          var avatar = ret.avatar.thumb.url;
+
+          var avatarImg = document.getElementById('icon');
+          if (avatar == null) {
+            avatarImg.style.backgroundImage = 'url(../image/logo108.png)';
+          } else {
+            avatarImg.style.backgroundImage = 'url('+ avatar +')';
+          }
+
+          var userName = document.getElementById('username');
+          userName.innerHTML = email;
+
+        } else {
+          alert(JSON.stringify(err));
+        }
+    });
+  }
+
+  function goToLoginWin() {
+    api.openWin({
+        name: 'login',
+        url: './login.html',
+        pageParam: {
+            name: 'test'
+        },
+    });
+  }
+
+  // 退出按钮
+  function fnLogout() {
+    api.confirm({
+      title: '提示',
+      msg: '是否退出登录',
+      buttons: ['确定', '取消']
+    }, function(ret, err) {
+      if (ret) {
+
+        var userInfo = $api.getStorage('userInfo');
+        api.ajax({
+            url: 'http://192.168.31.208:3000/api/v1/logout',
+            method: 'post',
+            data: {
+                values: {
+                    'auth_token': userInfo.auth_token
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+              alert(JSON.stringify(err));
+            } else {
+              alert(JSON.stringify(err));
+            }
+        });
+
+        $api.rmStorage('userInfo');
+        window.location.reload();       /*让页面刷新*/
+      } else {
+        alert(JSON.stringify(err));
+      }
+    });
+  }
+
+  function reloadMe() {             /*实现登录后自动刷新用户信息*/
+    window.location.reload();       /*让页面刷新*/
   }
 
 </script>
