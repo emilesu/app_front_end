@@ -63,10 +63,20 @@
       float: left;
     }
 
-    .content .info .list-post {
+    .content .info .list-review-count {
       color: #999;
       font-size: 12px;
+      width: 15px;
       float: right;
+    }
+
+    .content .info .list-review-icon {
+      float: right;
+      background-image: url(../image/review.png);
+      width: 15px;
+      height: 50px;
+      background-size: 14px 14px;
+      background-repeat: no-repeat;
     }
 
     </style>
@@ -83,7 +93,7 @@
           <h2 class="list-title">111</h2>
           <p class="list-intro">这个神奇的女人叫Frischmann, 和Suede乐队主唱brett有三年恋情. 在把两个男人迷得神魂颠倒之后, 飘然离去</p>
           <span class="list-update">1天前</span>
-          <span class="list-post">13 回复</span>
+          <span class="list-review-count">13 回复</span>
         </div>
       </div> -->
     </div>
@@ -117,7 +127,8 @@
                 newContent += '<h2 class="list-title">'+ ret.data[i].title +'</h2>';
                 newContent += '<p class="list-intro">'+ ret.data[i].intro +'</p>';
                 newContent += '<span class="list-update">'+ time +'</span>';
-                newContent += '<span class="list-post">'+ ret.data[i].articleId +'</span>';
+                newContent += '<span class="list-review-icon"></span>';
+                newContent += '<span class="list-review-count">'+ ret.data[i].review_count +'</span>';
               newContent += '</div>';
             newContent += '</div>';
 

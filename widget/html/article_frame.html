@@ -66,6 +66,22 @@
       padding: 10px 15px;
     }
 
+    .review-count {
+      color: #999;
+      font-size: 12px;
+      width: 15px;
+      float: right;
+    }
+
+    .review-icon {
+      float: right;
+      background-image: url(../image/review.png);
+      width: 15px;
+      height: 50px;
+      background-size: 14px 14px;
+      background-repeat: no-repeat;
+    }
+
 
 
     </style>
@@ -113,6 +129,8 @@
           newContent += '</div>';
           newContent += '<div class="article-update">';
             newContent += '<span>'+ time +'</span>';
+            newContent += '<span class="review-icon"></span>';
+            newContent += '<span class="review-count">'+ ret.review_count +'</span>';
           newContent += '</div>';
           newContent += '<div class="article-description">';
             newContent += ''+ ret.description +''
