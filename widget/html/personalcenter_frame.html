@@ -113,7 +113,7 @@
 <body>
 
   <header>
-    <div class="icon-panel">
+    <div class="icon-panel" tapmode onclick="fnSetAvatar()">
       <div id="icon" class="icon"></div>
     </div>
     <div id="username" class="username"></div>
@@ -209,6 +209,7 @@
     });
   }
 
+  // 登录按钮
   function goToLoginWin() {
     api.openWin({
         name: 'login',
@@ -219,6 +220,56 @@
     });
   }
 
+  // 更换头像
+  function fnSetAvatar() {
+    api.actionSheet({                      /*底部叹气选择菜单*/
+        title: '更换头像',
+        cancelTitle: '取消',
+        buttons: ['拍照', '相册']
+    }, function(ret, err) {
+        if (ret) {
+          var sourceTypes = [
+            'camera',
+            'album'
+          ];
+          api.getPicture({
+              sourceType: sourceTypes[ret.buttonIndex - 1],     /*选择按钮对应的图片源*/
+              allowEdit: true,
+              quality: 100,
+              targetWidth: 200,
+              targetHeight: 200,
+              saveToPhotoAlbum: false
+          }, function(ret, err) {
+              if (ret) {
+
+                  // 通过修改个人资料 api 上传图片
+                  var userInfo = $api.getStorage('userInfo');
+                  api.ajax({
+                      url: 'http://192.168.31.208:3000/api/v1/me?auth_token=' + userInfo.auth_token,
+                      method: 'patch',
+                      data: {
+                          files: {
+                              'avatar': ret.data
+                          }
+                      }
+                  }, function(ret, err) {
+                      if (ret) {
+                          window.location.reload();       /*让页面刷新*/
+                      } else {
+                          alert(JSON.stringify(err));
+                      }
+                  });
+
+              } else {
+                  alert(JSON.stringify(err));
+              }
+          });
+        } else {
+          alert(JSON.stringify(err));
+        }
+    });
+  }
+
   // 退出按钮
   function fnLogout() {
     api.confirm({
@@ -226,7 +277,7 @@
       msg: '是否退出登录',
       buttons: ['确定', '取消']
     }, function(ret, err) {
-      if (ret) {
+      if (ret.buttonIndex == 1) {
 
         var userInfo = $api.getStorage('userInfo');
         api.ajax({
@@ -248,7 +299,9 @@
         $api.rmStorage('userInfo');
         window.location.reload();       /*让页面刷新*/
       } else {
-        alert(JSON.stringify(err));
+        api.closeToWin({
+            name: 'root'
+        });
       }
     });
   }

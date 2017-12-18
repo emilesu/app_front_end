@@ -132,9 +132,32 @@ apiready = function() {
       // fixedOn: api.article_frame
   }, function(ret, err) {
       if (ret) {
-          alert(JSON.stringify(ret));
+
+        // 通过 review creact api 新增回复信息
+        var userInfo = $api.getStorage('userInfo');
+        api.ajax({
+            url: 'http://192.168.31.208:3000/api/v1/articles/'+ api.pageParam.articleId + '/reviews',
+            method: 'post',
+            data: {
+                values: {
+                  'auth_token': userInfo.auth_token,
+                  'content': ret.msg
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                inputField.resignFirstResponder();        /*信息发出后, 关闭键盘并设空值*/
+                inputField.setMsg();
+                // inputField.setPlaceholder({
+                //     placeholder: '我还想说...'
+                // });
+            } else {
+                alert('亲! 回帖不能为空哦');
+            }
+        });
+
       } else {
-          alert(JSON.stringify(err));
+          api.alert({ msg: JSON.stringify(err) });
       }
   });
 
