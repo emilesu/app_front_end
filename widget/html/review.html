@@ -1,0 +1,158 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>文章页面</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+
+    <style>
+
+      body {
+          height: 100%;
+      }
+
+      body {
+          display: -webkit-box;
+          display: -webkit-flex;
+          display: flex;
+          -webkit-box-orient: vertical;
+          -webkit-flex-flow: column;
+          flex-flow: column;
+      }
+
+      header {
+        position: relative;
+        width: 100%;
+        height: 40px;
+        background-color: #fff;
+        border-bottom: #f0f0f0 solid 1px;
+      }
+
+      header .win-title {
+        padding-top: 8px;
+        font-size: 18px;
+        color: #333;
+        text-align: center;
+      }
+
+      header .left {
+        position: absolute;
+        background-image: url(../image/back.png);
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 60px;
+        background-position: 10px 30px;
+        background-size: 24px 24px;
+        background-repeat: no-repeat;
+      }
+
+      footer {
+        position: relative;
+        width: 100%;
+        height: 50px;
+        background-color: #fff;
+      }
+
+    </style>
+</head>
+
+<body>
+  <!-- 头部 -->
+  <header id="header">
+    <div class="left" tapmode onclick="api.closeWin();"></div>
+    <div class="win-title">
+      <span>全部评论(150)</span>
+    </div>
+  </header>
+
+  <section></section>
+
+  <!-- 底部输入 -->
+  <footer id="footer">
+  </footer>
+</body>
+
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+apiready = function() {
+
+  var header = $api.byId('header');
+  $api.fixStatusBar(header);
+  var headerH = $api.offset(header).h;
+  api.openFrame({
+      name: 'review_frame',
+      url: './review_frame.html',
+      rect: {
+          x: 0,
+          y: headerH,
+          w: 'auto',
+          h: api.winHeight - headerH - 50
+      },
+      reload: true,
+      pageParam: {
+          articleId: api.pageParam.articleId
+      },
+      bounces: true,
+  });
+
+  // 输入回复表单按钮组件
+  var inputField = api.require('inputField');
+  inputField.open({
+      bgColor: '#fff',
+      lineColor: '#f9f9f9',
+      fileBgColor: '#fff',
+      borderColor: '#f0f0f0',
+      maxLines: 5,
+      placeholder:'我想说...',
+      sendBtn: {
+        bg: '#f0f0f0',          //字符串类型；发送按钮常态背景色
+        inputBg:'#f0f0f0',      //(可选项)字符串类型；当输入文字发时送按钮的背景色；默认：bg的色值
+        bgHighlight: '#999', //字符串类型；发送按钮点击时的高亮背景色
+        title: '发送',        //字符串类型；发送按钮的标题
+        titleSize: 14,    //数字类型；发送按钮的标题字体大小
+        titleColor: '#999',  //字符串类型；发送按钮标题文字颜色
+        corner: 2,            //数字类型；发送按钮圆角大小
+        sendW:50,             //数字类型；发送按钮的宽
+        sendH:36,             //数字类型；发送按钮的高
+      },
+      // fixedOn: api.article_frame
+  }, function(ret, err) {
+      if (ret) {
+
+        // 通过 review creact api 新增回复信息
+        var userInfo = $api.getStorage('userInfo');
+        api.ajax({
+            url: 'http://192.168.31.208:3000/api/v1/articles/'+ api.pageParam.articleId + '/reviews',
+            method: 'post',
+            data: {
+                values: {
+                  'auth_token': userInfo.auth_token,
+                  'content': ret.msg
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                inputField.resignFirstResponder();        /*信息发出后, 关闭键盘并设空值*/
+                inputField.setMsg();
+                // inputField.setPlaceholder({
+                //     placeholder: '我还想说...'
+                // });
+            } else {
+                alert('亲! 回帖不能为空哦');
+            }
+        });
+
+      } else {
+          api.alert({ msg: JSON.stringify(err) });
+      }
+  });
+
+}
+
+</script>
+
+</html>

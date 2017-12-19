@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>商品</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+
+    body {
+        height: 100%;
+        min-height: 100%;
+    }
+
+    section {
+      position: relative;
+      width: 100%;
+      height: auto;
+      box-sizing: border-box;
+    }
+
+    .review-list {
+      border-bottom: #f9f9f9 solid 1px;
+      padding: 15px;
+    }
+
+    .review-list .review-info {
+      position: relative;
+      /*background-color: red;*/
+      width: 100%;
+      height: 35px;
+    }
+
+    .review-list .review-info .left {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 35px;
+      height: 35px;
+      background-image: url(../image/logo108.png);
+      border-radius: 100px;
+      background-size: 35px 35px;
+      background-repeat: no-repeat;
+    }
+
+    .review-list .review-info .user-info {
+      position: absolute;
+      left: 45px;
+      width: 85px;
+      height: 45px;
+    }
+
+    .review-list .review-info .user-info .user-name {
+      color: #666;
+      font-size: 16px;
+    }
+
+    .review-list .review-info .user-info .updata {
+      color: #999;
+      font-size: 12px;
+      /*line-height: 1*/
+    }
+
+    .review-list .review-info .right {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
+
+    .review-list .review-info .right .review-praise-count {
+      color: #999;
+      font-size: 14px;
+    }
+
+    .review-list .review-info .right .review-praise-icon {
+      width: 14px;
+      height: 14px;
+      background-image: url(../image/like.png);
+      background-size: 14px 14px ;
+      background-repeat: no-repeat;
+    }
+
+    .review-list .review-content {
+      padding-top: 15px;
+      padding-left: 40px;
+      text-align: justify;
+      color: #666;
+      line-height: 28px;
+
+    }
+
+    </style>
+</head>
+
+<body>
+  <section id="review-index">
+    <!-- <div class="review-list">
+      <div class="review-info">
+        <div class="left" id="avatar-x"></div>
+
+        <div class="user-info">
+          <div class="user-name">苏大大</div>
+          <div class="updata">3小时前</div>
+        </div>
+
+        <div class="right">
+          <span class="review-praise-count">66</span>
+          <span class="review-praise-icon"></span>
+        </div>
+      </div>
+      <div class="review-content">
+        4个女友懒得啪啪啪的原因，看完你就知道为什么了. 4个女友懒得啪啪啪的原因，看完你就知道为什么了.
+      </div>
+    </div> -->
+  </section>
+</body>
+
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/time.js"></script>
+<script type="text/javascript">
+  apiready = function() {
+    reviewIndex();
+  }
+
+  // 配置 review Index 接口
+  function reviewIndex() {
+    api.ajax({
+        url: 'http://192.168.31.208:3000/api/v1/articles/'+ api.pageParam.articleId + '/reviews',
+        method: 'get',
+        dataTpye: 'json',
+    }, function(ret, err) {
+        if (ret) {
+            var review_count = ret.review_count;
+            var newContent = '';
+            for (var i = 0; i < review_count; i++) {
+
+              // 列表 UI 遍历
+              var articleId = ret.data[i].articleId;
+              var reviewId = ret.data[i].reviewId;
+              var content = ret.data[i].content;
+              var user_name = ret.data[i].user_name;
+              var user_avatar = ret.data[i].user_avatar.url;
+              var time = Time.human(ret.data[i].date);
+
+              newContent += '<div class="review-list">';
+                newContent += '<div class="review-info">';
+                  if (user_avatar == null) {
+                    newContent += '<div class="left");"></div>';
+                  } else {
+                    newContent += '<div class="left" style="background-image: url('+ user_avatar +');"></div>';
+                  };
+                  newContent += '<div class="user-info">';
+                    newContent += '<div class="user-name">'+ user_name +'</div>';
+                    newContent += '<div class="updata">'+ time +'</div>';
+                  newContent += '</div>';
+                  newContent += '<div class="right">';
+                    newContent += '<span class="review-praise-count">66</span>';
+                    newContent += '<span class="review-praise-icon"></span>'
+                  newContent += '</div>'
+                newContent += '</div>';
+                newContent += '<div class="review-content">'+ content +'</div>';
+              newContent += '</div>';
+
+            }
+            document.getElementById('review-index').innerHTML = newContent;
+
+        } else {
+            api.alert({ msg: JSON.stringify(err) });
+        }
+    });
+  }
+
+</script>

@@ -30,8 +30,8 @@
     }
 
     .article-info {
-      color: #333;
-      font-weight: lighter;
+      color: #666;
+      /*font-weight: lighter;*/
     }
 
     .article-title {
@@ -39,6 +39,7 @@
     }
 
     .article-title h1 {
+      color: #333;
       font-size: 22px;
       font-weight: normal;
       text-align: justify;
@@ -109,6 +110,7 @@
 <script type="text/javascript">
   apiready = function() {
     articleShowPage(api.pageParam.articleId);
+    swipeleftToReviewIndex(api.pageParam.articleId);
   }
 
   // 配置 article show page 接口
@@ -145,6 +147,23 @@
     });
 
   }
+
+  // 监听向左扫事件, 跳到 review index 页面
+  function swipeleftToReviewIndex(articleId_) {
+    api.addEventListener({
+        name:'swipeleft'
+    }, function(ret, err){
+       api.openWin({
+           name: 'review',
+           url: './review.html',
+           reload: true,
+           pageParam: {
+               articleId: articleId_
+           }
+       });
+    });
+  }
+
 
 
 </script>

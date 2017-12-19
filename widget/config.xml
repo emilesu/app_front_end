@@ -7,9 +7,9 @@
         Developer
     </author>
     <content src="index.html" />
-	<preference name="appBackground" value="rgba(0,0,0,0)"/>
-	<preference name="windowBackground" value="rgba(0,0,0,0)"/>
-	<preference name="frameBackgroundColor" value="rgba(0,0,0,0)"/>
+	<preference name="appBackground" value="#FFF"/>
+	<preference name="windowBackground" value="#FFF"/>
+	<preference name="frameBackgroundColor" value="#FFF"/>
   <preference name="hScrollBarEnabled" value="false" />
   <preference name="vScrollBarEnabled" value="false" />
 	<preference name="autoLaunch" value="true"/>

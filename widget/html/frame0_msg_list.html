@@ -39,12 +39,12 @@
     }
 
     .content .info {
-      color: #333;
-      font-weight: lighter;
+      /*font-weight: lighter;*/
       padding: 10px 15px;
     }
 
     .content .info .list-title {
+      color: #333;
       font-size: 22px;
       font-weight: normal;
       text-align: justify;
@@ -52,7 +52,7 @@
 
     .content .info .list-intro {
       color: #666;
-      padding: 6px 0 10px;
+      padding: 12px 0 10px;
       line-height: 28px;
       text-align: justify;
     }
@@ -115,20 +115,26 @@
       dataTpye: 'json',
     }, function(ret, err) {
         if (ret) {
+          var article_count = ret.article_count;
           var newContent = '';
-          for (var i = 0; i < 5; i++){
+          for (var i = 0; i < article_count; i++){
 
             // 列表 UI 遍历
             var time = Time.human(ret.data[i].date);
+            var articleId = ret.data[i].articleId;
+            var article_cover = ret.data[i].article_cover.url;
+            var title = ret.data[i].title;
+            var intro = ret.data[i].intro;
+            var review_count = ret.data[i].review_count;
 
-            newContent += '<div class="content" tapmode onclick="fnOpenArticleWin('+ ret.data[i].articleId +');">';
-              newContent += '<img class="list-thunbnail" src="'+ ret.data[i].article_cover.url +'">';
+            newContent += '<div class="content" tapmode onclick="fnOpenArticleWin('+ articleId +');">';
+              newContent += '<img class="list-thunbnail" src="'+ article_cover +'">';
               newContent += '<div class="info">';
-                newContent += '<h2 class="list-title">'+ ret.data[i].title +'</h2>';
-                newContent += '<p class="list-intro">'+ ret.data[i].intro +'</p>';
+                newContent += '<h2 class="list-title">'+ title +'</h2>';
+                newContent += '<p class="list-intro">'+ intro +'</p>';
                 newContent += '<span class="list-update">'+ time +'</span>';
                 newContent += '<span class="list-review-icon"></span>';
-                newContent += '<span class="list-review-count">'+ ret.data[i].review_count +'</span>';
+                newContent += '<span class="list-review-count">'+ review_count +'</span>';
               newContent += '</div>';
             newContent += '</div>';
 
