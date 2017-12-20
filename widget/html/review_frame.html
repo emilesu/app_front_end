@@ -142,7 +142,7 @@
               var reviewId = ret.data[i].reviewId;
               var content = ret.data[i].content;
               var user_name = ret.data[i].user_name;
-              var user_avatar = ret.data[i].user_avatar.url;
+              var user_avatar = ret.data[i].user_avatar;
               var time = Time.human(ret.data[i].date);
 
               newContent += '<div class="review-list">';
@@ -150,7 +150,7 @@
                   if (user_avatar == null) {
                     newContent += '<div class="left");"></div>';
                   } else {
-                    newContent += '<div class="left" style="background-image: url('+ user_avatar +');"></div>';
+                    newContent += '<div class="left" style="background-image: url('+ user_avatar.url +');"></div>';
                   };
                   newContent += '<div class="user-info">';
                     newContent += '<div class="user-name">'+ user_name +'</div>';
