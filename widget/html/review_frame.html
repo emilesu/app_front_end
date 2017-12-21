@@ -72,13 +72,14 @@
 
     .review-list .review-info .right .review-praise-count {
       color: #999;
-      font-size: 14px;
+      font-size: 12px;
+      padding-right: 8px;
     }
 
     .review-list .review-info .right .review-praise-icon {
       width: 14px;
       height: 14px;
-      background-image: url(../image/like.png);
+      background-image: url(../image/good.png);
       background-size: 14px 14px ;
       background-repeat: no-repeat;
     }
@@ -144,6 +145,7 @@
               var user_name = ret.data[i].user_name;
               var user_avatar = ret.data[i].user_avatar;
               var time = Time.human(ret.data[i].date);
+              var review_vote_count = ret.data[i].review_vote_count;
 
               newContent += '<div class="review-list">';
                 newContent += '<div class="review-info">';
@@ -156,9 +158,17 @@
                     newContent += '<div class="user-name">'+ user_name +'</div>';
                     newContent += '<div class="updata">'+ time +'</div>';
                   newContent += '</div>';
-                  newContent += '<div class="right">';
-                    newContent += '<span class="review-praise-count">66</span>';
-                    newContent += '<span class="review-praise-icon"></span>'
+                  newContent += '<div class="right" tapmode onclick="upvoteReview('+ reviewId +');">';
+                    newContent += '<span class="review-praise-count" id="vote-count-'+ reviewId +'">'+ review_vote_count +'</span>';
+
+                    // 自动辨认出已点赞的 icon
+                    var hasVote = $api.getStorage('vote_'+ reviewId +'');
+                    if ( hasVote == 'hasVote') {
+                      newContent += '<span class="review-praise-icon" style="background-image: url(../image/good-filling.png);"></span>'
+                    } else {
+                      newContent += '<span class="review-praise-icon" id="vote-icon-'+ reviewId +'"></span>'
+                    }
+
                   newContent += '</div>'
                 newContent += '</div>';
                 newContent += '<div class="review-content">'+ content +'</div>';
@@ -166,6 +176,47 @@
 
             }
             document.getElementById('review-index').innerHTML = newContent;
+
+        } else {
+            api.alert({ msg: JSON.stringify(err) });
+        }
+    });
+  }
+
+  // 投票点赞按钮事件
+  function upvoteReview(reviewId) {
+    var hasVote = $api.getStorage('vote_'+ reviewId +'');
+    if ( hasVote == 'hasVote') {
+      api.alert({ msg: "亲! 你已经点过赞了!" });
+    } else {
+      newUpvote(reviewId);
+    }
+  }
+
+  function newUpvote(reviewId){
+    var randomTimes = Math.ceil(Math.random() * 4 + 1);        /*1至5的随机数*/
+    api.ajax({
+        url: 'http://192.168.31.208:3000/api/v1/articles/'+ api.pageParam.articleId + '/reviews/' + reviewId + '/upvote',
+        method: 'post',
+        data: {
+            values: {
+                'times': randomTimes
+            }
+        }
+    }, function(ret, err) {
+        if (ret) {
+
+            // 让赞数 + 1, 并更新数据
+            var oldVoteCount = document.getElementById('vote-count-'+ reviewId +'').textContent;
+            var newVoteCount = parseInt(oldVoteCount) + 1;        /*JS 中字符串转数字的方法*/
+            document.getElementById('vote-count-'+ reviewId +'').innerText = newVoteCount;
+
+            // 让赞 icon 改变
+            var oldVoteIcon = document.getElementById('vote-icon-'+ reviewId +'');
+            oldVoteIcon.style.backgroundImage = 'url(../image/good-filling.png)';
+
+            //将已赞数据存入本地缓存
+            $api.setStorage('vote_'+ reviewId +'', 'hasVote');
 
         } else {
             api.alert({ msg: JSON.stringify(err) });
